@@ -81,17 +81,22 @@ export default function ComprehensionQuiz({ questions }: ComprehensionQuizProps)
         </span>
       </div>
 
-      <h3 className="text-xl font-semibold mb-6">{question.question}</h3>
+      <h3 className="text-xl font-semibold mb-6 text-gray-900">{question.question}</h3>
 
       <div className="space-y-3 mb-6">
         {question.options.map((option, index) => {
           let bgColor = 'bg-gray-50 hover:bg-gray-100';
+          let textColor = 'text-gray-900';
 
           if (selectedAnswer !== null) {
             if (index === question.correctAnswer) {
               bgColor = 'bg-green-100 border-green-500';
+              textColor = 'text-green-900';
             } else if (index === selectedAnswer) {
               bgColor = 'bg-red-100 border-red-500';
+              textColor = 'text-red-900';
+            } else {
+              textColor = 'text-gray-600';
             }
           }
 
@@ -100,7 +105,7 @@ export default function ComprehensionQuiz({ questions }: ComprehensionQuizProps)
               key={index}
               onClick={() => handleAnswer(index)}
               disabled={selectedAnswer !== null}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-colors ${bgColor} ${
+              className={`w-full text-left p-4 rounded-lg border-2 transition-colors font-medium ${bgColor} ${textColor} ${
                 selectedAnswer !== null ? 'cursor-not-allowed' : 'cursor-pointer'
               }`}
             >
