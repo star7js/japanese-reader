@@ -5,11 +5,13 @@ An interactive web app for learning Japanese through reading. Designed to solve 
 ## Features
 
 - **Interactive Text** - Click any word to see instant definitions, readings, and meanings
+- **Text-to-Speech** - Listen to native Japanese pronunciation for sentences and words (built-in, no API needed!)
 - **Furigana Support** - Readings displayed above Japanese text
 - **Grammar Sidebar** - Contextual grammar explanations for patterns in the story
 - **Comprehension Quiz** - Test your understanding with immediate feedback
 - **AI Tutor** - Ask questions about grammar, vocabulary, or pronunciation (requires API key)
 - **Visual Vocabulary Highlighting** - New words highlighted in blue
+- **Progressive Lessons** - 4 beginner lessons that build on each other
 
 ## Why This Exists
 
@@ -79,19 +81,33 @@ japanese-reader/
 │   ├── api/tutor/       # AI tutor API endpoint
 │   └── page.tsx         # Main page
 ├── components/
-│   ├── InteractiveText.tsx      # Clickable Japanese text
+│   ├── InteractiveText.tsx      # Clickable Japanese text with TTS
 │   ├── GrammarSidebar.tsx       # Grammar explanations
 │   ├── ComprehensionQuiz.tsx    # Quiz component
-│   └── AITutor.tsx              # AI chat interface
+│   ├── AITutor.tsx              # AI chat interface
+│   └── StorySelector.tsx        # Lesson selector
 ├── data/
-│   └── sampleStory.ts   # Sample beginner story
+│   ├── sampleStory.ts   # Lesson 1: Nice to Meet You
+│   ├── story02.ts       # Lesson 2: Daily Life
+│   ├── story03.ts       # Lesson 3: At a Restaurant
+│   ├── story04.ts       # Lesson 4: Yesterday
+│   └── allStories.ts    # Story collection
+├── hooks/
+│   └── useSpeech.ts     # Text-to-speech hook
 └── types/
     └── story.ts         # TypeScript interfaces
 ```
 
+## Current Lessons
+
+1. **はじめまして (Nice to Meet You)** - Basic particles (は, が, です), self-introduction
+2. **まいにちのせいかつ (Daily Life)** - Time/object markers (に, を), て-form verb conjugation
+3. **レストランで (At a Restaurant)** - たい-form (want to), い-adjectives, food vocabulary
+4. **きのう (Yesterday)** - Past tense (ました, でした, かった), time expressions
+
 ## Adding More Stories
 
-Edit `data/sampleStory.ts` or create new story files following the same structure:
+Create new story files in `data/` following this structure:
 
 ```typescript
 {
@@ -104,15 +120,19 @@ Edit `data/sampleStory.ts` or create new story files following the same structur
 }
 ```
 
+Then add them to `data/allStories.ts`.
+
 ## Future Ideas
 
-- [ ] Multiple stories at different levels
+- [x] Multiple stories at different levels
+- [x] Text-to-speech for pronunciation
 - [ ] User accounts and progress tracking
 - [ ] Spaced repetition system for vocabulary
-- [ ] Text-to-speech for pronunciation
 - [ ] Writing practice (typing Japanese)
 - [ ] Import your own content
 - [ ] Mobile app version
+- [ ] Vocabulary list with all learned words
+- [ ] Speed control for text-to-speech
 
 ## License
 
