@@ -1,65 +1,83 @@
-import Image from "next/image";
+import InteractiveText from '@/components/InteractiveText';
+import GrammarSidebar from '@/components/GrammarSidebar';
+import ComprehensionQuiz from '@/components/ComprehensionQuiz';
+import AITutor from '@/components/AITutor';
+import { sampleStory } from '@/data/sampleStory';
 
 export default function Home() {
+  const storyContext = `Story: ${sampleStory.title}
+Level: ${sampleStory.level}
+
+Text:
+${sampleStory.sentences.map((s) => s.words.map((w) => w.japanese).join('')).join(' ')}
+
+Vocabulary:
+${Array.from(
+  new Set(
+    sampleStory.sentences
+      .flatMap((s) => s.words)
+      .map((w) => `${w.japanese} (${w.reading}): ${w.meaning}`)
+  )
+).join('\n')}
+
+Grammar points covered:
+${sampleStory.grammarPoints.map((g) => `- ${g.pattern}: ${g.explanation}`).join('\n')}`;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <header className="bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <h1 className="text-3xl font-bold text-gray-800">
+            📚 Interactive Japanese Reader
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-gray-600 mt-1">
+            Click any word to see its meaning • Complete the quiz • Ask the AI tutor
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <div className="mb-6 bg-white rounded-lg shadow-md p-6">
+          <div className="flex justify-between items-center mb-2">
+            <h2 className="text-2xl font-bold text-gray-800">{sampleStory.title}</h2>
+            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-semibold">
+              {sampleStory.level}
+            </span>
+          </div>
+          <p className="text-sm text-gray-600">
+            New vocabulary is highlighted in <span className="text-blue-600 font-semibold">blue</span>
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <InteractiveText sentences={sampleStory.sentences} />
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-bold text-gray-800 mb-4">Comprehension Quiz</h2>
+              <ComprehensionQuiz questions={sampleStory.questions} />
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <AITutor storyContext={storyContext} />
+            </div>
+          </div>
+
+          <div className="lg:col-span-1">
+            <div className="sticky top-4">
+              <GrammarSidebar grammarPoints={sampleStory.grammarPoints} />
+            </div>
+          </div>
         </div>
       </main>
+
+      <footer className="bg-white border-t border-gray-200 mt-12">
+        <div className="max-w-7xl mx-auto px-4 py-6 text-center text-gray-600 text-sm">
+          <p>Built with Next.js, TypeScript, and Claude AI</p>
+        </div>
+      </footer>
     </div>
   );
 }
